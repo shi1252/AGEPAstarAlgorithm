@@ -57,7 +57,7 @@ public class Pathfinding : MonoBehaviour {
             {
                 RetracePath(startNode, targetNode);
                 sw.Stop();
-                print("Elapsed Time : " + sw.ElapsedTicks + "Ticks");
+                print("List Elapsed Time : " + sw.ElapsedTicks + "Ticks");
                 return;
             }
 
@@ -92,20 +92,11 @@ public class Pathfinding : MonoBehaviour {
                 {
                     // 오픈셋에 현재 노드가 이미 있으면 수치를 비교한 후 경로를 교체한다. 동일하면 g수치가 큰 쪽으로 교체한다.
                     /* 해당 코드를 작성할 것 */
-                    if (n.fCost > gCost + hCost)
+                    if (n.fCost > gCost + hCost || (n.fCost == gCost + hCost && n.gCost > gCost))
                     {
                         n.gCost = gCost;
                         n.hCost = hCost;
                         n.parent = currentNode;
-                    }
-                    else if (n.fCost == gCost + hCost)
-                    {
-                        if (n.gCost > gCost)
-                        {
-                            n.gCost = gCost;
-                            n.hCost = hCost;
-                            n.parent = currentNode;
-                        }
                     }
                 }
             }
@@ -132,7 +123,7 @@ public class Pathfinding : MonoBehaviour {
             {
                 RetracePath(startNode, targetNode);
                 sw.Stop();
-                print("Elapsed Time : " + sw.ElapsedTicks + "Ticks");
+                print("PriorityQueue Elapsed Time : " + sw.ElapsedTicks + "Ticks");
                 return;
             }
 
@@ -146,10 +137,8 @@ public class Pathfinding : MonoBehaviour {
                 int gCost = currentNode.gCost + GetDistance(currentNode, n);
                 int hCost = GetDistance(n, targetNode);
 
-                // 오픈셋에 현재 노드가 없으면 노드에 점수를 설정한 후 추가한다.
                 if (!openSet.Contains(n))
                 {
-                    /* 해당 코드를 작성할 것 */
                     n.gCost = currentNode.gCost + GetDistance(currentNode, n);
                     n.hCost = GetDistance(n, targetNode);
                     n.parent = currentNode;
@@ -157,22 +146,11 @@ public class Pathfinding : MonoBehaviour {
                 }
                 else
                 {
-                    // 오픈셋에 현재 노드가 이미 있으면 수치를 비교한 후 경로를 교체한다. 동일하면 g수치가 큰 쪽으로 교체한다.
-                    /* 해당 코드를 작성할 것 */
-                    if (n.fCost > gCost + hCost)
+                    if (n.fCost > gCost + hCost || (n.fCost == gCost + hCost && n.gCost > gCost))
                     {
                         n.gCost = gCost;
                         n.hCost = hCost;
                         n.parent = currentNode;
-                    }
-                    else if (n.fCost == gCost + hCost)
-                    {
-                        if (n.gCost > gCost)
-                        {
-                            n.gCost = gCost;
-                            n.hCost = hCost;
-                            n.parent = currentNode;
-                        }
                     }
                 }
             }

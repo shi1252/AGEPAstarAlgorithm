@@ -27,9 +27,9 @@ public class Node
             return -1;
         else if (fCost == item.fCost)
         {
-            if (gCost > item.gCost)
-                return 1;
-            return 0;
+            if (gCost < item.gCost)
+                return 0;
+            return 1;
         }
         return 2;
     }

@@ -15,7 +15,16 @@ public class PriorityQueue
     public void Enqueue(Node item)
     {
         data[count++] = item;
-        Compare(count - 1);
+        int i = count - 1;
+
+        while (i > 0)
+        {
+            int j = (i - 1) / 2;
+            int compare = data[i].Compare(data[j]);
+            if (compare > 0) break;
+            Swap(i, j);
+            i = j;
+        }
     }
 
     public Node Dequeue()
@@ -37,44 +46,22 @@ public class PriorityQueue
                 int lc = i * 2 + 1;
                 if (lc > last) break;
                 int rc = lc + 1;
-                if (rc <= last && data[rc].Compare(data[lc]) < 0)
+                if (rc <= last && data[rc].Compare(data[lc]) < 1)
                     lc = rc;
-                if (data[i].Compare(data[lc]) < 0) break;
-                Node temp = data[i];
-                data[i] = data[lc];
-                data[lc] = temp;
+                int compare = data[lc].Compare(data[i]);
+                if (compare > 0) break;
+                Swap(i, lc);
                 i = lc;
             }
         }
         return ret;
     }
 
-    public void Compare(int i)
+    public void Swap(int n1, int n2)
     {
-        while (i > 0)
-        {
-            int j = (i - 1) / 2;
-
-            int compare = data[i].Compare(data[j]);
-
-            if (compare > 0) break;
-            else if (compare < 0)
-            {
-                Node temp = data[i];
-                data[i] = data[j];
-                data[j] = temp;
-            }
-            else
-            {
-                if (data[i].gCost > data[j].gCost)
-                {
-                    Node temp = data[i];
-                    data[i] = data[j];
-                    data[j] = temp;
-                }
-            }
-            i = j;
-        }
+        Node temp = data[n1];
+        data[n1] = data[n2];
+        data[n2] = temp;
     }
 
     public int Count { get { return count; } }
@@ -87,15 +74,5 @@ public class PriorityQueue
                 return true;
         }
         return false;
-    }
-
-    public int IndexOf(Node item)
-    {
-        int i = 0;
-        for (; i < count; i++)
-        {
-            if (data[i] == item) break;
-        }
-        return i;
     }
 }
